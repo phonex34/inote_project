@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
+
+class EnvironmentConfig {
+  static const APP_NAME =
+      String.fromEnvironment('DEFINE_APP_NAME', defaultValue: 'iNote');
+  static const APP_SUFFIX = String.fromEnvironment('DEFINE_APP_SUFFIX');
+}
 
 void main() {
   runApp(MyApp());
@@ -26,7 +33,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: TestApp(),
     );
   }
 }
@@ -112,6 +119,87 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class TestApp extends StatelessWidget {
+  const TestApp({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
+    return Scaffold(
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text("tesst"),
+      ),
+      body: Center(
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent.
+        child: Column(
+          // Column is also a layout widget. It takes a list of children and
+          // arranges them vertically. By default, it sizes itself to fit its
+          // children horizontally, and tries to be as tall as its parent.
+          //
+          // Invoke "debug painting" (press "p" in the console, choose the
+          // "Toggle Debug Paint" action from the Flutter Inspector in Android
+          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+          // to see the wireframe for each widget.
+          //
+          // Column has various properties to control how it sizes itself and
+          // how it positions its children. Here we use mainAxisAlignment to
+          // center the children vertically; the main axis here is the vertical
+          // axis because Columns are vertical (the cross axis would be
+          // horizontal).
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'You defined ENV variables like',
+              style: Theme.of(context).textTheme.headline5,
+            ),
+            Text(
+              'APP_NAME: ${EnvironmentConfig.APP_NAME}',
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+            Text(
+              'APP_SUFFIX: ${EnvironmentConfig.APP_SUFFIX}',
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Package Name',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                  FutureBuilder<PackageInfo>(
+                      future: PackageInfo.fromPlatform(),
+                      builder: (context, value) {
+                        if (!value.hasData) {
+                          return Container();
+                        }
+
+                        return Text(
+                          value.data.packageName,
+                          style: Theme.of(context).textTheme.headline6,
+                        );
+                      }),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
