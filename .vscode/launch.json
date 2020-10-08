@@ -1,0 +1,95 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Current Device",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define",
+        "DEFINE_APP_NAME=iNote dev",
+        "--dart-define",
+        "DEFINE_APP_SUFFIX=.dev"
+      ],
+      "console": "terminal"
+    },
+    {
+      "name": "Current Device prod",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define",
+        "DEFINE_APP_NAME=iNote",
+        "--dart-define",
+        "DEFINE_APP_SUFFIX=.prod"
+      ],
+      "console": "terminal"
+    },
+    {
+      "name": "Current Device dev release",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main-dev.dart",
+      "args": ["--flavor", "dev", "--release"],
+      "console": "terminal"
+    },
+    {
+      "name": "Android Pixel 3a XL",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "emulator-5554",
+      "program": "lib/main-dev.dart",
+      "args": ["--flavor", "dev"]
+    },
+    {
+      "name": "iPhone 11 Pro Max",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "9AB1F439-D5FE-4CC1-8437-FE335E727D97",
+      "program": "lib/main-dev.dart",
+      "args": ["--flavor", "dev"]
+    },
+    {
+      "name": "iPhone 5",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "66cd3853df819a625388dbf4c8149036d3ed02df",
+      "program": "lib/main-dev.dart",
+      "args": ["--flavor", "dev", "--release"]
+    },
+    {
+      "name": "iPhone 5 prod",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "66cd3853df819a625388dbf4c8149036d3ed02df",
+      "program": "lib/main-dev.dart",
+      "args": ["--flavor", "dev", "--release"]
+    },
+    {
+      "name": "iPhone 8",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "26DE5288-9697-4593-841B-600E45604DDA",
+      "program": "lib/main-dev.dart",
+      "args": ["--flavor", "dev"]
+    },
+    {
+      "name": "xiaomi",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "ad51d4359904",
+      "program": "lib/main-dev.dart",
+      "args": ["--flavor", "dev"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "All Devices",
+      "configurations": ["Current Device", "Android Pixel 3a XL", "iPhone SE"]
+    },
+    {
+      "name": "ios android simulator",
+      "configurations": ["iPhone 11 Pro Max", "Android Pixel 3a XL"]
+    }
+  ]
+}
