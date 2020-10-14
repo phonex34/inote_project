@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "867698227436",
+    "firebase_url": "https://inote-880a6.firebaseio.com",
+    "project_id": "inote-880a6",
+    "storage_bucket": "inote-880a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:867698227436:android:b3d38828c5b0ed86e34dc9",
+        "android_client_info": {
+          "package_name": "com.example.inote_project.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "867698227436-0a7co8shd6ha3f8sv3csb9qrq1ef1rq2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBm2P1chZoqyWunWfT5svH_peUBLmiQmjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "867698227436-0a7co8shd6ha3f8sv3csb9qrq1ef1rq2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "867698227436-mu320i5dme9qr1im76g73qgf606lbd98.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.inoteProject.dev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
