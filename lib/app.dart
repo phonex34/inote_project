@@ -1,11 +1,11 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_firebase_login/authentication/authentication.dart';
-import 'package:flutter_firebase_login/home/home.dart';
-import 'package:flutter_firebase_login/login/login.dart';
-import 'package:flutter_firebase_login/splash/splash.dart';
-import 'package:flutter_firebase_login/theme.dart';
+import 'package:get/get.dart';
+import 'package:inote_project/modules/authentication/authentication.dart';
+import 'package:inote_project/modules/home/view/home_screen.dart';
+import 'package:inote_project/modules/login/login.dart';
+import 'package:inote_project/modules/splash/splash_screen.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -42,8 +42,7 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: theme,
+    return GetMaterialApp(
       navigatorKey: _navigatorKey,
       builder: (context, child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
@@ -51,13 +50,13 @@ class _AppViewState extends State<AppView> {
             switch (state.status) {
               case AuthenticationStatus.authenticated:
                 _navigator.pushAndRemoveUntil<void>(
-                  HomePage.route(),
+                  HomeScreen.route(),
                   (route) => false,
                 );
                 break;
               case AuthenticationStatus.unauthenticated:
                 _navigator.pushAndRemoveUntil<void>(
-                  LoginPage.route(),
+                  LoginScreen.route(),
                   (route) => false,
                 );
                 break;
@@ -68,7 +67,7 @@ class _AppViewState extends State<AppView> {
           child: child,
         );
       },
-      onGenerateRoute: (_) => SplashPage.route(),
+      onGenerateRoute: (_) => SplashScreen.route(),
     );
   }
 }

@@ -1,43 +1,43 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:inote_project/modules/login/login.dart';
-import 'package:formz/formz.dart';
 import 'package:inote_project/modules/sign_up/sign_up.dart';
+import 'package:formz/formz.dart';
 
-class LoginScreen extends StatelessWidget {
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({Key key}) : super(key: key);
+
   static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => LoginScreen());
+    return MaterialPageRoute<void>(builder: (_) => const SignUpScreen());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(title: const Text('Sign Up')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: BlocProvider(
-          create: (_) => LoginCubit(
+        child: BlocProvider<SignUpCubit>(
+          create: (_) => SignUpCubit(
             context.repository<AuthenticationRepository>(),
           ),
-          child: LoginForm(),
+          child: SignUpForm(),
         ),
       ),
     );
   }
 }
 
-class LoginForm extends StatelessWidget {
+class SignUpForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginCubit, LoginState>(
+    return BlocListener<SignUpCubit, SignUpState>(
       listener: (context, state) {
         if (state.status.isSubmissionFailure) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              const SnackBar(content: Text('Authentication Failure')),
+              const SnackBar(content: Text('Sign Up Failure')),
             );
         }
       },
@@ -46,20 +46,10 @@ class LoginForm extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Image.asset(
-            //   'assets/bloc_logo_small.png',
-            //   height: 120,
-            // ),
-            Text("Login"),
-            const SizedBox(height: 16.0),
             _EmailInput(),
             const SizedBox(height: 8.0),
             _PasswordInput(),
             const SizedBox(height: 8.0),
-            _LoginButton(),
-            const SizedBox(height: 8.0),
-            _GoogleLoginButton(),
-            const SizedBox(height: 4.0),
             _SignUpButton(),
           ],
         ),
@@ -71,12 +61,12 @@ class LoginForm extends StatelessWidget {
 class _EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
+    return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return TextField(
-          key: const Key('loginForm_emailInput_textField'),
-          onChanged: (email) => context.bloc<LoginCubit>().emailChanged(email),
+          key: const Key('signUpForm_emailInput_textField'),
+          onChanged: (email) => context.bloc<SignUpCubit>().emailChanged(email),
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             labelText: 'email',
@@ -92,13 +82,13 @@ class _EmailInput extends StatelessWidget {
 class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
+    return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
-          key: const Key('loginForm_passwordInput_textField'),
+          key: const Key('signUpForm_passwordInput_textField'),
           onChanged: (password) =>
-              context.bloc<LoginCubit>().passwordChanged(password),
+              context.bloc<SignUpCubit>().passwordChanged(password),
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'password',
@@ -111,59 +101,26 @@ class _PasswordInput extends StatelessWidget {
   }
 }
 
-class _LoginButton extends StatelessWidget {
+class _SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
+    return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return state.status.isSubmissionInProgress
             ? const CircularProgressIndicator()
             : RaisedButton(
-                key: const Key('loginForm_continue_raisedButton'),
-                child: const Text('LOGIN'),
+                key: const Key('signUpForm_continue_raisedButton'),
+                child: const Text('SIGN UP'),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
-                color: const Color(0xFFFFD600),
+                color: Colors.orangeAccent,
                 onPressed: state.status.isValidated
-                    ? () => context.bloc<LoginCubit>().logInWithCredentials()
+                    ? () => context.bloc<SignUpCubit>().signUpFormSubmitted()
                     : null,
               );
       },
-    );
-  }
-}
-
-class _GoogleLoginButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return RaisedButton.icon(
-      key: const Key('loginForm_googleLogin_raisedButton'),
-      label: const Text(
-        'SIGN IN WITH GOOGLE',
-        style: TextStyle(color: Colors.white),
-      ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-      icon: const Icon(FontAwesomeIcons.google, color: Colors.white),
-      color: theme.accentColor,
-      onPressed: () => context.bloc<LoginCubit>().logInWithGoogle(),
-    );
-  }
-}
-
-class _SignUpButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return FlatButton(
-      key: const Key('loginForm_createAccount_flatButton'),
-      child: Text(
-        'CREATE ACCOUNT',
-        style: TextStyle(color: theme.primaryColor),
-      ),
-      onPressed: () => Navigator.of(context).push<void>(SignUpScreen.route()),
     );
   }
 }

@@ -3,12 +3,12 @@ import 'package:equatable/equatable.dart';
 import 'package:inote_project/modules/authentication/authentication.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:formz/formz.dart';
-part 'login_state.dart';
+part 'sign_up_state.dart';
 
-class LoginCubit extends Cubit<LoginState> {
-  LoginCubit(this._authenticationRepository)
+class SignUpCubit extends Cubit<SignUpState> {
+  SignUpCubit(this._authenticationRepository)
       : assert(_authenticationRepository != null),
-        super(const LoginState());
+        super(const SignUpState());
 
   final AuthenticationRepository _authenticationRepository;
 
@@ -28,29 +28,17 @@ class LoginCubit extends Cubit<LoginState> {
     ));
   }
 
-  Future<void> logInWithCredentials() async {
+  Future<void> signUpFormSubmitted() async {
     if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
-      await _authenticationRepository.logInWithEmailAndPassword(
+      await _authenticationRepository.signUp(
         email: state.email.value,
         password: state.password.value,
       );
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
     } on Exception {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
-    }
-  }
-
-  Future<void> logInWithGoogle() async {
-    emit(state.copyWith(status: FormzStatus.submissionInProgress));
-    try {
-      await _authenticationRepository.logInWithGoogle();
-      emit(state.copyWith(status: FormzStatus.submissionSuccess));
-    } on Exception {
-      emit(state.copyWith(status: FormzStatus.submissionFailure));
-    } on NoSuchMethodError {
-      emit(state.copyWith(status: FormzStatus.pure));
     }
   }
 }
