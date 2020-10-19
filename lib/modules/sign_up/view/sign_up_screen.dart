@@ -65,7 +65,6 @@ class _EmailInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return TextField(
-          key: const Key('signUpForm_emailInput_textField'),
           onChanged: (email) => context.bloc<SignUpCubit>().emailChanged(email),
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
@@ -86,7 +85,6 @@ class _PasswordInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
-          key: const Key('signUpForm_passwordInput_textField'),
           onChanged: (password) =>
               context.bloc<SignUpCubit>().passwordChanged(password),
           obscureText: true,
@@ -110,7 +108,6 @@ class _SignUpButton extends StatelessWidget {
         return state.status.isSubmissionInProgress
             ? const CircularProgressIndicator()
             : RaisedButton(
-                key: const Key('signUpForm_continue_raisedButton'),
                 child: const Text('SIGN UP'),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),

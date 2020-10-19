@@ -75,7 +75,6 @@ class _EmailInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return TextField(
-          key: const Key('loginForm_emailInput_textField'),
           onChanged: (email) => context.bloc<LoginCubit>().emailChanged(email),
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
@@ -96,7 +95,6 @@ class _PasswordInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
-          key: const Key('loginForm_passwordInput_textField'),
           onChanged: (password) =>
               context.bloc<LoginCubit>().passwordChanged(password),
           obscureText: true,
@@ -120,7 +118,6 @@ class _LoginButton extends StatelessWidget {
         return state.status.isSubmissionInProgress
             ? const CircularProgressIndicator()
             : RaisedButton(
-                key: const Key('loginForm_continue_raisedButton'),
                 child: const Text('LOGIN'),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
@@ -140,7 +137,6 @@ class _GoogleLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return RaisedButton.icon(
-      key: const Key('loginForm_googleLogin_raisedButton'),
       label: const Text(
         'SIGN IN WITH GOOGLE',
         style: TextStyle(color: Colors.white),
@@ -158,7 +154,6 @@ class _SignUpButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return FlatButton(
-      key: const Key('loginForm_createAccount_flatButton'),
       child: Text(
         'CREATE ACCOUNT',
         style: TextStyle(color: theme.primaryColor),
