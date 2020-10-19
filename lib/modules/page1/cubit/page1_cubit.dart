@@ -12,7 +12,7 @@ class Page1Cubit extends Cubit<Page1State> {
 
   Future<void> initData() async {
     try {
-      await _repo.getAllListNews();
+      final a = await _repo.getAllListNews();
     } catch (e) {
       print(e);
     }
