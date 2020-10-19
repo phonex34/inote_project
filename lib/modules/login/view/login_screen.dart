@@ -2,13 +2,19 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:inote_project/modules/login/login.dart';
 import 'package:formz/formz.dart';
 import 'package:inote_project/modules/sign_up/sign_up.dart';
+import 'package:inote_project/router/app_pages.dart';
 
 class LoginScreen extends StatelessWidget {
-  static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => LoginScreen());
+  // static Route route() {
+  //   return MaterialPageRoute<void>(builder: (_) => LoginScreen());
+  // }
+
+  static GetPage get route {
+    return GetPage(name: AppRoutes.LOGIN, page: () => LoginScreen());
   }
 
   @override

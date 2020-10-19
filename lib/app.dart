@@ -6,6 +6,7 @@ import 'package:inote_project/modules/authentication/authentication.dart';
 import 'package:inote_project/modules/home/view/home_screen.dart';
 import 'package:inote_project/modules/login/login.dart';
 import 'package:inote_project/modules/splash/splash_screen.dart';
+import 'package:inote_project/router/app_pages.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -43,31 +44,34 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      navigatorKey: _navigatorKey,
+      // navigatorKey: _navigatorKey,
       builder: (context, child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (context, state) {
             switch (state.status) {
               case AuthenticationStatus.authenticated:
-                _navigator.pushAndRemoveUntil<void>(
-                  HomeScreen.route(),
-                  (route) => false,
-                );
+                Get.offAllNamed(AppRoutes.HOME, predicate: (route) => false);
                 break;
               case AuthenticationStatus.unauthenticated:
-                _navigator.pushAndRemoveUntil<void>(
-                  LoginScreen.route(),
-                  (route) => false,
-                );
+                // _navigator.pushAndRemoveUntil<void>(
+                //   LoginScreen.route(),
+                //   (route) => false,
+                // );
+                Get.offAllNamed(AppRoutes.LOGIN, predicate: (route) => false);
+
                 break;
               default:
                 break;
             }
+            return Container();
           },
           child: child,
         );
       },
-      onGenerateRoute: (_) => SplashScreen.route(),
+      getPages: AppPages.routes,
+      initialRoute: AppPages.INITIAL,
+      // initialRoute: InputDecoration,
+      // onGenerateRoute: (_) => SplashScreen.route(),
     );
   }
 }
