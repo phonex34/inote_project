@@ -436,6 +436,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.5.0"
+  loading_hud:
+    dependency: "direct main"
+    description:
+      path: "packages/loading_hud"
+      relative: true
+    source: path
+    version: "1.0.0"
   logger:
     dependency: "direct main"
     description:
