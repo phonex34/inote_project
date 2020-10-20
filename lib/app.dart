@@ -1,11 +1,9 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' as Bloc;
 import 'package:get/get.dart';
 import 'package:inote_project/modules/authentication/authentication.dart';
-import 'package:inote_project/modules/home/view/home_screen.dart';
-import 'package:inote_project/modules/login/login.dart';
-import 'package:inote_project/modules/splash/splash_screen.dart';
+import 'package:inote_project/router/app_pages.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -18,9 +16,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
+    return Bloc.RepositoryProvider.value(
       value: authenticationRepository,
-      child: BlocProvider(
+      child: Bloc.BlocProvider(
         create: (_) => AuthenticationBloc(
           authenticationRepository: authenticationRepository,
         ),
@@ -36,38 +34,42 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
-  final _navigatorKey = GlobalKey<NavigatorState>();
+  // final _navigatorKey = GlobalKey<NavigatorState>();
 
-  NavigatorState get _navigator => _navigatorKey.currentState;
+  // NavigatorState get _navigator => _navigatorKey.currentState;
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      navigatorKey: _navigatorKey,
+      // navigatorKey: _navigatorKey,
+      defaultTransition: Transition.cupertino,
       builder: (context, child) {
-        return BlocListener<AuthenticationBloc, AuthenticationState>(
+        return Bloc.BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (context, state) {
             switch (state.status) {
               case AuthenticationStatus.authenticated:
-                _navigator.pushAndRemoveUntil<void>(
-                  HomeScreen.route(),
-                  (route) => false,
-                );
+                Get.offAllNamed(AppRoutes.HOME, predicate: (route) => false);
                 break;
               case AuthenticationStatus.unauthenticated:
-                _navigator.pushAndRemoveUntil<void>(
-                  LoginScreen.route(),
-                  (route) => false,
-                );
+                // _navigator.pushAndRemoveUntil<void>(
+                //   LoginScreen.route(),
+                //   (route) => false,
+                // );
+                Get.offAllNamed(AppRoutes.LOGIN, predicate: (route) => false);
+
                 break;
               default:
                 break;
             }
+            return Container();
           },
           child: child,
         );
       },
-      onGenerateRoute: (_) => SplashScreen.route(),
+      getPages: AppPages.routes,
+      initialRoute: AppPages.INITIAL,
+      // initialRoute: InputDecoration,
+      // onGenerateRoute: (_) => SplashScreen.route(),
     );
   }
 }
