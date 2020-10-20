@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:inote_project/modules/page1/cubit/page1_cubit.dart';
 import 'package:inote_project/repository/page_repository.dart';
 import 'package:inote_project/router/app_pages.dart';
+import 'package:inote_project/utilities/network_exception.dart';
+import 'package:inote_project/utilities/result_state.dart';
 
 class Page1Screen extends StatelessWidget {
   const Page1Screen({Key key}) : super(key: key);
@@ -20,24 +22,24 @@ class Page1Screen extends StatelessWidget {
   Widget build(BuildContext context) {
     PageRepository _repo = Get.find<PageRepository>();
     return BlocProvider(
-      create: (context) => Page1Cubit(_repo)..initData(),
-      child: BlocListener<Page1Cubit, Page1State>(
-        listener: (context, state) {
-          // TODO: implement listener
-          final cubit = context.bloc<Page1Cubit>();
-          switch (state.runtimeType) {
-            case Page1Initial:
-              cubit.initData();
-              break;
-            default:
-              break;
-          }
-        },
+        create: (context) => Page1Cubit(_repo)..postData(),
         child: Scaffold(
           appBar: AppBar(title: Text("test")),
-          body: Container(color: Colors.red),
-        ),
-      ),
-    );
+          body: BlocBuilder<Page1Cubit, ResultState<dynamic>>(
+            builder: (context, state) {
+              return state.when(loading: () {
+                return Center(child: CircularProgressIndicator());
+              }, idle: () {
+                return Container();
+              }, data: (data) {
+                // return dataWidget(data);
+                return Container(color: Colors.red);
+              }, error: (NetworkExceptions error) {
+                return Center(
+                    child: Text(NetworkExceptions.getErrorMessage(error)));
+              });
+            },
+          ),
+        ));
   }
 }

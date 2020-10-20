@@ -30,78 +30,6 @@ class DioRepository {
   }
 }
 
-class LoggingInterceptor extends Interceptor {
-  int _maxCharactersPerLine = 200;
-
-  @override
-  Future onRequest(RequestOptions options) async {
-    print("--> ${options.method} ${options.path}");
-    print("Content type: ${options.contentType}");
-    print("<-- END HTTP -->");
-    return super.onRequest(options);
-  }
-
-  @override
-  Future onResponse(Response response) {
-    print(
-        "<-- ${response.statusCode} ${response.request.method} ${response.request.path}");
-    String responseAsString = response.data.toString();
-    if (responseAsString.length > _maxCharactersPerLine) {
-      int iterations =
-          (responseAsString.length / _maxCharactersPerLine).floor();
-      for (int i = 0; i <= iterations; i++) {
-        int endingIndex = i * _maxCharactersPerLine + _maxCharactersPerLine;
-        if (endingIndex > responseAsString.length) {
-          endingIndex = responseAsString.length;
-        }
-        print(
-            responseAsString.substring(i * _maxCharactersPerLine, endingIndex));
-      }
-    } else {
-      print(response.data);
-    }
-    print("<-- END HTTP");
-
-    return super.onResponse(response);
-  }
-
-  @override
-  Future onError(DioError err) {
-    print("<-- Error -->");
-    print(err.request);
-    print(err.response);
-    print(err.error);
-    print(err.message);
-    print("<-- End error  -->");
-    return super.onError(err);
-  }
-}
-
-class CacheInterceptor extends Interceptor {
-  CacheInterceptor();
-
-  var _cache = new Map<Uri, Response>();
-
-  @override
-  Future onResponse(Response response) {
-    _cache[response.request.uri] = response;
-    return super.onResponse(response);
-  }
-
-  @override
-  onError(DioError e) {
-    print('onError: $e');
-    if (e.type == DioErrorType.CONNECT_TIMEOUT ||
-        e.type == DioErrorType.DEFAULT) {
-      var cachedResponse = _cache[e.request.uri];
-      if (cachedResponse != null) {
-        return super.onResponse(cachedResponse);
-      }
-    }
-    return super.onError(e);
-  }
-}
-
 class AppInterceptors extends Interceptor {
   @override
   Future<dynamic> onRequest(RequestOptions options) async {
@@ -136,21 +64,26 @@ class AppInterceptors extends Interceptor {
   }
 
   //TODO:not need will enable if need
-  // @override
-  // Future<dynamic> onResponse(Response options) async {
-  //   if (options.headers.value("verifyToken") != null) {
-  //     //if the header is present, then compare it with the Shared Prefs key
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     var verifyToken = prefs.get("VerifyToken");
+  @override
+  Future<dynamic> onResponse(Response options) async {
+    // if (options.headers.value("verifyToken") != null) {
+    //   //if the header is present, then compare it with the Shared Prefs key
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   var verifyToken = prefs.get("VerifyToken");
 
-  //     // if the value is the same as the header, continue with the request
-  //     if (options.headers.value("verifyToken") == verifyToken) {
-  //       return options;
-  //     }
-  //   }
-
-  //   return DioError(request: options.request, message: "User is no longer active");
-  // }
+    //   // if the value is the same as the header, continue with the request
+    //   if (options.headers.value("verifyToken") == verifyToken) {
+    //     return options;
+    //   }
+    // }
+    if (options.data['code'] == 401) {
+      Get.snackbar('Unauthen', 'Hết hạn đang nhập',
+          snackPosition: SnackPosition.BOTTOM, duration: Duration(seconds: 10));
+    }
+    // return DioError(
+    //     request: options.request, message: "User is no longer active");
+    super.onResponse(options);
+  }
 }
 
 extension DioErrroExtenion on DioError {
