@@ -48,6 +48,7 @@ dependencies:
     path: packages/loading_hud
   json_annotation: ^3.1.0
   retrofit: ^1.3.4+1
+  freezed_annotation: ^0.12.0
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +56,7 @@ dev_dependencies:
   json_serializable: ^3.5.0
   build_runner: ^1.0.0
   retrofit_generator: any
+  freezed: any
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pfubspec
 
