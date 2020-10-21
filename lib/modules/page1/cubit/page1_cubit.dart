@@ -21,10 +21,10 @@ class Page1Cubit extends Cubit<ResultState<dynamic>> {
   Future<void> initData() async {
     // _loadingHud.show();
     emit(ResultState.loading());
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      // fetch data
-      _loadingHud.show();
-    });
+    // SchedulerBinding.instance.addPostFrameCallback((_) {
+    // fetch data
+    _loadingHud.show();
+    // });
     try {
       final data = await _repo.getAllListNewsFailed();
       _loadingHud.dismiss();

@@ -25,7 +25,7 @@ Future<void> configureDependencies() async {
 
   //LoadingHud [<SharedPreferences>,], [PrettyPrinter]
   Get.lazyPut<LoadingHud<Text>>(
-      () => LoadingHud(Get.context,
+      () => LoadingHud(
           cancelable: true, // Cancelable when pressing Android back key
           canceledOnTouchOutside:
               true, // Cancelable when touch outside of the LoadingHud

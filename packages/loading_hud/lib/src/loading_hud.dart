@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import './loading_indicator.dart';
+import 'package:get/get.dart';
 
 class LoadingHud<T extends Text> {
-  final BuildContext context;
   final bool cancelable;
   final bool canceledOnTouchOutside;
   final bool dimBackground;
@@ -14,8 +14,7 @@ class LoadingHud<T extends Text> {
   final Future<T> future;
   final Duration autoDismissDuration;
 
-  LoadingHud(
-    this.context, {
+  LoadingHud({
     this.cancelable = true,
     this.canceledOnTouchOutside = true,
     this.dimBackground = true,
@@ -28,8 +27,31 @@ class LoadingHud<T extends Text> {
   });
 
   void show() {
-    showGeneralDialog(
-      context: context,
+    //   showGeneralDialog(
+    //     context: parentContext,
+    //     pageBuilder: (BuildContext context, Animation<double> animation,
+    //         Animation<double> secondaryAnimation) {
+    //       return WillPopScope(
+    //         child: _HudContent<T>(
+    //           hudColor: hudColor,
+    //           indicator: indicator,
+    //           iconSuccess: iconSuccess,
+    //           iconError: iconError,
+    //           future: future,
+    //           autoDismissDuration: autoDismissDuration,
+    //         ),
+    //         onWillPop: () {
+    //           return Future.value(cancelable);
+    //         },
+    //       );
+    //     },
+    //     barrierColor: dimBackground ? Color(0x33000000) : null,
+    //     barrierLabel: 'Dismiss',
+    //     barrierDismissible: canceledOnTouchOutside,
+    //     transitionDuration: const Duration(milliseconds: 250),
+    //     useRootNavigator: true,
+    //   );
+    Get.generalDialog(
       pageBuilder: (BuildContext context, Animation<double> animation,
           Animation<double> secondaryAnimation) {
         return WillPopScope(
@@ -55,7 +77,7 @@ class LoadingHud<T extends Text> {
   }
 
   void dismiss() {
-    Navigator.of(context, rootNavigator: true).pop();
+    Get.back();
   }
 }
 
@@ -107,7 +129,8 @@ class _HudContentState<T extends Text> extends State<_HudContent> {
           // Auto dismiss
           if (done && widget.autoDismissDuration != null) {
             Future.delayed(widget.autoDismissDuration, () {
-              Navigator.of(context, rootNavigator: true).pop();
+              // Navigator.of(context, rootNavigator: true).pop();
+              Get.back();
             });
           }
           return DecoratedBox(

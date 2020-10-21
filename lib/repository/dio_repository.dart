@@ -77,8 +77,11 @@ class AppInterceptors extends Interceptor {
     //   }
     // }
     if (options.data['code'] == 401) {
-      Get.snackbar('Unauthen', 'Hết hạn đang nhập',
-          snackPosition: SnackPosition.BOTTOM, duration: Duration(seconds: 10));
+      if (!Get.isDialogOpen) {
+        Get.snackbar('Unauthen', 'Hết hạn đang nhập',
+            snackPosition: SnackPosition.BOTTOM,
+            duration: Duration(seconds: 10));
+      }
     }
     // return DioError(
     //     request: options.request, message: "User is no longer active");
